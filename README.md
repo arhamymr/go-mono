@@ -1,6 +1,6 @@
 ## Go-lang Mono Backend API
 
-Experimental Projec , i created this project using Go for learning implements backend
+Experimental Project, i created this project using Go for learning implements backend
 
 #### To-do 
 - Authentication and Authorization
