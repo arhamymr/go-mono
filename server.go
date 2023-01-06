@@ -1,22 +1,21 @@
 package main
 
 import (
-    "fmt"
     "net/http"
-    "example/greetings"
+    "github.com/gin-gonic/gin"
 )
 
 func main() {
     const PORT = ":1234"
+    router := gin.Default()
     
-    http.HandleFunc("/", func(w  http.ResponseWriter, r *http.Request) {
-        fmt.Fprintf(w, "welcome to my website ")
-    })
+    // serving static 
+    router.Static("/static", "./static")
     
-    fs := http.FileServer(http.Dir("static/"))
-    http.Handle("/static/", http.StripPrefix("/static/", fs))
-
-    http.ListenAndServe(PORT, nil)
-    
-    fmt.Println(greetings.Hello("arham"),"Server running on Port", PORT)
+    router.GET("/",func(context *gin.Context) {
+        context.JSON(http.StatusOK, gin.H{
+            "message": "Welcome to gin",
+        })
+    }) 
+   router.Run(PORT)
 }
