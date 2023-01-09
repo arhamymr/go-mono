@@ -1,62 +1,93 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
-	"go-mono/configs"
-	"go-mono/morestrings"
-	"go-mono/word"
+	"go-mono/toolkit"
+	"log"
 	"net/http"
-
-	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 )
-
-type Register struct {
-	email    string
-	password string
-	name     string
-}
-
-var db *gorm.DB
 
 const PORT = ":3000"
 
-func init() {
-	db = configs.ConnectDB()
+type welcome string
+
+type User struct {
+	Email    string `json:"email"`
+	Name     string `json:"name"`
+	Password string `json:"password"`
+}
+
+type ResponseUser struct {
+	status  uint
+	data    User
+	message string
+}
+
+func (wc welcome) Welcome(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "hello welcome to our server "+string(wc))
+}
+
+func Login(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "login")
+}
+
+func getJSON(w http.ResponseWriter, r *http.Request) {
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+
+	switch r.Method {
+	case "GET":
+		w.Write([]byte(`{
+			"data": "hello",
+			"message": "get declaraed",
+			"matcher": "yuhu"
+			}
+			`))
+	case "POST":
+		w.Write([]byte(`"message": "post declaraed"`))
+	}
+}
+
+func checkUser(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+
+	var user User
+	dbPassword := "arham"
+
+	err := json.NewDecoder(r.Body).Decode(&user)
+
+	if err != nil {
+		log.Fatal("Error decoding into struct", err)
+	}
+
+	if user.Password == dbPassword {
+		fmt.Println("succesfully login")
+	}
+
+	ResUser := &ResponseUser{
+		status:  200,
+		data:    user,
+		message: "login successfully",
+	}
+
+	fmt.Println(ResUser, "res user")
+	json.NewEncoder(w).Encode(*ResUser)
 }
 
 func main() {
-	router := gin.Default()
-	router.Static("/static", "./static")
+	r := http.NewServeMux()
 
-	router.POST("/auth/register", func(c *gin.Context) {
-		fmt.Println(c, "context")
+	toolkit.StaticServe("static/")
 
-		var reg Register
+	var we welcome
+	we = "hellow"
 
-		if err := c.ShouldBind(&reg); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"message": "samothing wrong",
-			})
-			return
-		}
-
-		c.JSON(http.StatusOK, gin.H{
-			"message": "created users",
-			"payload": reg.email,
-			"data":    reg.name,
-			"all":     reg,
-		})
-	})
-
-	router.GET("/", func(context *gin.Context) {
-		context.JSON(http.StatusOK, gin.H{
-			"message": "Welcome to gin",
-			"author":  word.Hello("arham"),
-			"reverse": morestrings.ReverseRunes(word.Hello("arham")),
-			// "result":  result,
-		})
-	})
-
-	router.Run(PORT)
+	r.HandleFunc("/login", Login)
+	r.HandleFunc("/auth/register", checkUser)
+	r.HandleFunc("/", we.Welcome)
+	r.HandleFunc("/json", getJSON)
+	http.ListenAndServe(PORT, r)
 }
