@@ -2,16 +2,27 @@ package router
 
 import (
 	"go-mono/handlers"
+	"strings"
 
-	"github.com/labstack/echo"
-	"github.com/labstack/echo/middleware"
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 func InitRoute() echo.Echo {
 	r := *echo.New()
 
 	// middleware
-	r.Use(middleware.Gzip())
+
+	// skip swagger docs
+	r.Use(middleware.GzipWithConfig(middleware.GzipConfig{
+		Skipper: func(c echo.Context) bool {
+			if strings.Contains(c.Request().URL.Path, "docs") {
+				return true
+			}
+			return false
+		},
+	}))
+
 	r.Use(middleware.Logger())
 	r.Use(middleware.Recover())
 	r.Use(middleware.Secure())
