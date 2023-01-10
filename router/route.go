@@ -4,10 +4,17 @@ import (
 	"go-mono/handlers"
 
 	"github.com/labstack/echo"
+	"github.com/labstack/echo/middleware"
 )
 
 func InitRoute() echo.Echo {
 	r := *echo.New()
+
+	// middleware
+	r.Use(middleware.Gzip())
+	r.Use(middleware.Logger())
+	r.Use(middleware.Recover())
+	r.Use(middleware.Secure())
 
 	r.Static("/static", "static")
 
