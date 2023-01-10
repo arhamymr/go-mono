@@ -2,7 +2,12 @@ module go-mono
 
 go 1.18
 
-require github.com/labstack/echo v3.3.10+incompatible
+require (
+	github.com/labstack/echo v3.3.10+incompatible
+	gorm.io/driver/mysql v1.4.5
+	gorm.io/gen v0.3.19
+	gorm.io/gorm v1.24.3
+)
 
 require (
 	github.com/go-sql-driver/mysql v1.7.0 // indirect
@@ -21,9 +26,6 @@ require (
 	golang.org/x/text v0.6.0 // indirect
 	golang.org/x/tools v0.5.0 // indirect
 	gorm.io/datatypes v1.1.0 // indirect
-	gorm.io/driver/mysql v1.4.5 // indirect
-	gorm.io/gen v0.3.19 // indirect
-	gorm.io/gorm v1.24.3 // indirect
 	gorm.io/hints v1.1.1 // indirect
 	gorm.io/plugin/dbresolver v1.4.0 // indirect
 )
