@@ -17,3 +17,7 @@ Experimental Project, i created this project using Go (Echo) for learning implem
 - MySql
 - GORM (ORM)
 - GORM/gen
+
+#### Docs
+
+- Auto Generate Swagger
