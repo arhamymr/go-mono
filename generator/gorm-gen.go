@@ -1,10 +1,15 @@
 package main
 
 import (
+	"go-mono/configs"
 	"go-mono/db"
 
 	"gorm.io/gen"
 )
+
+func init() {
+	configs.LoadEnv()
+}
 
 func main() {
 	g := gen.NewGenerator(gen.Config{
