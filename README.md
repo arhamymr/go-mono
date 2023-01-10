@@ -1,8 +1,8 @@
 ## Go-lang Mono Backend API
 
-Experimental Project, i created this project using Go for learning implements backend
+Experimental Project, i created this project using Go (Echo) for learning implements backend
 
-### Databases 
+#### Databases 
 
 - MySql
 - GORM (ORM)
