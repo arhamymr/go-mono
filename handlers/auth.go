@@ -13,24 +13,28 @@ type User struct {
 	Name, Password, Email string
 }
 
-func PasswordHashing(password string) string {
+func PasswordHashing(password string) (string, error) {
 	hashed, err := bcrypt.GenerateFromPassword([]byte(password), 14)
-	if err != nil {
-		panic("Failed to generate hashed password ")
-	}
-	return string(hashed)
+	return string(hashed), err
 }
 
 func Register(c echo.Context) error {
+
 	db := configs.ConnectDB("mysql")
+
+	hashed, err := PasswordHashing(c.FormValue("password"))
+
+	if err != nil {
+		panic("Failed to hashing password")
+	}
 
 	u := model.User{
 		Email:          c.FormValue("email"),
 		Name:           c.FormValue("name"),
-		HashedPassword: PasswordHashing(c.FormValue("password")),
+		HashedPassword: hashed,
 	}
 
-	err := db.Create(&u)
+	err = db.Create(&u).Error
 
 	if err != nil {
 		type ErrorMessage struct {
@@ -40,11 +44,19 @@ func Register(c echo.Context) error {
 
 		return echo.NewHTTPError(http.StatusBadRequest, ErrorMessage{
 			Status:  http.StatusBadRequest,
-			Message: err.Error.Error(),
+			Message: err.Error(),
 		})
 	}
 
-	return c.JSON(200, u)
+	type Result struct {
+		Status  uint
+		Message string
+	}
+
+	return c.JSON(200, Result{
+		Status:  http.StatusOK,
+		Message: "Successfully created user" + u.Email,
+	})
 
 }
 
