@@ -1,14 +1,22 @@
 package handlers
 
 import (
+	"fmt"
+	"go-mono/model"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
 )
 
-func Update(c echo.Context) error {
-	u := User{"arham", "hashedpassword", "email"}
-	return c.JSON(200, u)
+func Create(c echo.Context) error {
+	u := model.User{
+		Email:          "arhamymr@gmail.com",
+		Name:           "arham",
+		HashedPassword: "hellow youth",
+	}
+
+	fmt.Println(u)
+	return c.JSON(200, "test")
 }
 
 func GetMany(c echo.Context) error {

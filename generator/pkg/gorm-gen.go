@@ -1,23 +1,18 @@
-package main
+package pkg
 
 import (
 	"go-mono/configs"
-	"go-mono/db"
 
 	"gorm.io/gen"
 )
 
-func init() {
-	configs.LoadEnv()
-}
-
-func main() {
+func GormGen() {
 	g := gen.NewGenerator(gen.Config{
 		OutPath: "go-mono",
 		Mode:    gen.WithoutContext | gen.WithDefaultQuery | gen.WithQueryInterface, // generate mode
 	})
 
-	db := db.ConnectDB()
+	db := configs.ConnectDB("mysql")
 	g.UseDB(db)
 
 	g.GenerateAllTable()

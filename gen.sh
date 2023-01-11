@@ -1,1 +1,1 @@
-go run generator/gorm-gen.go
+go run generator/gen.go

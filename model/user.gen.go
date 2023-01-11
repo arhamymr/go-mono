@@ -18,7 +18,7 @@ type User struct {
 	HashedPassword string    `gorm:"column:hashed_password;not null" json:"hashed_password"`
 	CreatedAt      time.Time `gorm:"column:created_at;not null;default:CURRENT_TIMESTAMP(3)" json:"created_at"`
 	UpdatedAt      time.Time `gorm:"column:updated_at;not null" json:"updated_at"`
-	Deleted        time.Time `gorm:"column:deleted" json:"deleted"`
+	Deleted        bool      `gorm:"column:deleted;not null" json:"deleted"`
 }
 
 // TableName User's table name
