@@ -1,4 +1,4 @@
-package pkg
+package generator
 
 import (
 	"go-mono/configs"

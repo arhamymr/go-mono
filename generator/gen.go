@@ -2,7 +2,7 @@ package main
 
 import (
 	"go-mono/configs"
-	"go-mono/generator/pkg"
+	generator "go-mono/generator/pkg"
 )
 
 func init() {
@@ -10,5 +10,5 @@ func init() {
 }
 
 func main() {
-	pkg.GormGen()
+	generator.GormGen()
 }
