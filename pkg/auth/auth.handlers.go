@@ -1,15 +1,11 @@
 package pkg_auth
 
 import (
-	"errors"
-	"fmt"
-	"go-mono/configs"
 	"go-mono/exception"
 	"go-mono/model"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
-	"gorm.io/gorm"
 )
 
 type User struct {
@@ -19,7 +15,12 @@ type User struct {
 type Result struct {
 	Status  uint
 	Message string
-	Result  int64
+	Result  *model.User
+	Token   string
+}
+
+type ModelUser struct {
+	data *model.User
 }
 
 func Register(c echo.Context) error {
@@ -34,7 +35,9 @@ func Register(c echo.Context) error {
 		Name:           c.FormValue("name"),
 		HashedPassword: hashed,
 	}
-	result, err := CreateUser(&user)
+
+	data := ModelUser{&user}
+	result, err := data.CreateUser()
 
 	if err != nil {
 		return exception.NotFound(err)
@@ -43,28 +46,44 @@ func Register(c echo.Context) error {
 	return c.JSON(http.StatusOK, &Result{
 		Status:  http.StatusOK,
 		Message: "Successfully created user " + user.Email,
-		Result:  result.RowsAffected,
+		Result:  result,
 	})
 }
 
 func Login(c echo.Context) error {
-	db := configs.ConnectDB("mysql")
 	email := c.FormValue("email")
 	password := c.FormValue("password")
 
+	hashed, err := PasswordHashing(password)
 	user := model.User{
 		Email:          email,
-		HashedPassword: password,
+		HashedPassword: hashed,
 	}
 
-	result := db.First(&user)
+	// find user
+	data := ModelUser{&user}
+	result, err := data.FindUser()
 
-	errors.Is(result.Error, gorm.ErrRecordNotFound)
+	if err != nil {
+		return exception.NotFound(err)
+	}
 
-	fmt.Println(result)
+	// Compare password
+	err = ComparePassword(result.HashedPassword, password)
+	if err != nil {
+		return c.JSON(http.StatusUnauthorized, "password not found")
+	}
+
+	// Generate token
+	token, err := data.CreateToken()
+	if err != nil {
+		panic("failed to create token")
+	}
+
 	return c.JSON(http.StatusOK, &Result{
 		Status:  http.StatusOK,
-		Message: "Registered Users" + email,
-		Result:  result.RowsAffected,
+		Message: "Registered User " + email,
+		Token:   token,
+		Result:  result,
 	})
 }
