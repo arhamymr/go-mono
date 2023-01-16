@@ -4,6 +4,7 @@ Experimental Project, i created this project using Go (Echo) for learning implem
 
 ### Common Feature
 
+- Authentication (JWT)
 - CRUD //to-do
 
 ### Echo Framework

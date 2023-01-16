@@ -3,36 +3,9 @@ package pkg_auth
 import (
 	"go-mono/configs"
 	"go-mono/model"
-	"time"
 
-	"github.com/golang-jwt/jwt/v4"
 	"golang.org/x/crypto/bcrypt"
 )
-
-type jwtCustomClaims struct {
-	Email string `json:"email"`
-	jwt.RegisteredClaims
-}
-
-func (r ModelUser) CreateToken() (string, error) {
-	claims := &jwtCustomClaims{
-		r.data.Email,
-		jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 72)),
-		},
-	}
-
-	// Create token with claims
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-
-	t, err := token.SignedString([]byte(configs.GET("SECRET")))
-
-	if err != nil {
-		return "", err
-	}
-
-	return t, nil
-}
 
 func PasswordHashing(password string) (string, error) {
 	hashed, err := bcrypt.GenerateFromPassword([]byte(password), 14)

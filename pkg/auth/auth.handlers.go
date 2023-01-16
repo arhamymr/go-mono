@@ -2,26 +2,12 @@ package pkg_auth
 
 import (
 	"go-mono/exception"
+	"go-mono/jwt"
 	"go-mono/model"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
 )
-
-type User struct {
-	Name, Password, Email string
-}
-
-type Result struct {
-	Status  uint
-	Message string
-	Result  *model.User
-	Token   string
-}
-
-type ModelUser struct {
-	data *model.User
-}
 
 func Register(c echo.Context) error {
 	hashed, err := PasswordHashing(c.FormValue("password"))
@@ -40,7 +26,7 @@ func Register(c echo.Context) error {
 	result, err := data.CreateUser()
 
 	if err != nil {
-		return exception.NotFound(err)
+		return exception.CustomException(err)
 	}
 
 	return c.JSON(http.StatusOK, &Result{
@@ -65,7 +51,7 @@ func Login(c echo.Context) error {
 	result, err := data.FindUser()
 
 	if err != nil {
-		return exception.NotFound(err)
+		return exception.CustomException(err)
 	}
 
 	// Compare password
@@ -75,7 +61,8 @@ func Login(c echo.Context) error {
 	}
 
 	// Generate token
-	token, err := data.CreateToken()
+	token, err := jwt.CreateToken(&user)
+
 	if err != nil {
 		panic("failed to create token")
 	}

@@ -18,8 +18,8 @@ type Post struct {
 	UpdatedAt time.Time `gorm:"column:updated_at;not null" json:"updated_at"`
 	Content   string    `gorm:"column:content;not null" json:"content"`
 	Published bool      `gorm:"column:published;not null" json:"published"`
-	Deleted   time.Time `gorm:"column:deleted" json:"deleted"`
 	AuthorID  int32     `gorm:"column:author_id;not null" json:"author_id"`
+	Deleted   bool      `gorm:"column:deleted" json:"deleted"`
 }
 
 // TableName Post's table name

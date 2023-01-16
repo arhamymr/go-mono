@@ -2,6 +2,8 @@ package pkg_posts
 
 import (
 	"fmt"
+	"go-mono/exception"
+	"go-mono/jwt"
 	"go-mono/model"
 	"net/http"
 
@@ -9,14 +11,28 @@ import (
 )
 
 func Create(c echo.Context) error {
-	u := model.User{
-		Email:          "arhamymr@gmail.com",
-		Name:           "arham",
-		HashedPassword: "hellow youth",
+	token := jwt.ExtractToken(c)
+
+	fmt.Println(token, "token")
+	post := model.Post{
+		Title:     c.FormValue("title"),
+		Content:   c.FormValue("content"),
+		Published: true,
+		AuthorID:  token.ID,
 	}
 
-	fmt.Println(u)
-	return c.JSON(200, "test")
+	data := ModelPost{data: &post}
+	err := data.CreatePost()
+
+	if err != nil {
+		return exception.CustomException(err)
+	}
+
+	return c.JSON(200, Result{
+		Status:  http.StatusOK,
+		Message: "Posts Created",
+		Result:  &post,
+	})
 }
 
 func GetMany(c echo.Context) error {

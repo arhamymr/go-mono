@@ -13,7 +13,7 @@ type ErrorMessage struct {
 	Detail  string
 }
 
-func NotFound(err error) *echo.HTTPError {
+func CustomException(err error) *echo.HTTPError {
 
 	duplicateEntry := strings.Contains(err.Error(), "Duplicate entry")
 
