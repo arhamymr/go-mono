@@ -1,7 +1,6 @@
 package pkg_posts
 
 import (
-	"fmt"
 	"go-mono/exception"
 	"go-mono/jwt"
 	"go-mono/model"
@@ -13,7 +12,6 @@ import (
 func Create(c echo.Context) error {
 	token := jwt.ExtractToken(c)
 
-	fmt.Println(token, "token")
 	post := model.Post{
 		Title:     c.FormValue("title"),
 		Content:   c.FormValue("content"),
