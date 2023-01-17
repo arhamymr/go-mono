@@ -3,6 +3,7 @@ module go-mono
 go 1.18
 
 require (
+	github.com/golang-jwt/jwt/v4 v4.4.3
 	github.com/joho/godotenv v1.4.0
 	github.com/labstack/echo/v4 v4.9.0
 	github.com/swaggo/swag v1.8.9
@@ -13,7 +14,6 @@ require (
 
 require (
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
-	github.com/golang-jwt/jwt/v4 v4.4.3 // indirect
 	github.com/swaggo/files v0.0.0-20220728132757-551d4a08d97a // indirect
 	golang.org/x/time v0.3.0 // indirect
 )

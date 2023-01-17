@@ -1,4 +1,4 @@
-package pkg_auth
+package mod_auth
 
 import (
 	"go-mono/exception"

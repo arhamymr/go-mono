@@ -2,8 +2,8 @@ package router
 
 import (
 	"go-mono/jwt"
-	pkg_auth "go-mono/pkg/auth"
-	pkg_posts "go-mono/pkg/posts"
+	mod_auth "go-mono/modules/auth"
+	mod_posts "go-mono/modules/posts"
 	"strings"
 
 	echojwt "github.com/labstack/echo-jwt/v4"
@@ -19,8 +19,8 @@ func InitRoute() *echo.Echo {
 func Route(r echo.Echo) {
 	// auth
 	auth := r.Group("/auth", middleware.Secure())
-	auth.POST("/register", pkg_auth.Register)
-	auth.POST("/login", pkg_auth.Login)
+	auth.POST("/register", mod_auth.Register)
+	auth.POST("/login", mod_auth.Login)
 	// todo
 
 	// delete users
@@ -30,10 +30,10 @@ func Route(r echo.Echo) {
 	post := r.Group("/post", middleware.Secure())
 
 	post.Use(echojwt.WithConfig(jwt.Configs()))
-	post.POST("/create", pkg_posts.Create)
-	post.GET("", pkg_posts.GetMany)
-	post.GET("/:id", pkg_posts.GetOne)
-	post.DELETE("/:id", pkg_posts.Delete)
+	post.POST("/create", mod_posts.Create)
+	post.GET("", mod_posts.GetMany)
+	post.GET("/:id", mod_posts.GetOne)
+	post.DELETE("/:id", mod_posts.Delete)
 
 	// docs
 	r.GET("/docs/*", echoSwagger.WrapHandler, middleware.GzipWithConfig(middleware.GzipConfig{

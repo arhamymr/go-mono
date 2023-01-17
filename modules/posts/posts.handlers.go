@@ -1,4 +1,4 @@
-package pkg_posts
+package mod_posts
 
 import (
 	"go-mono/exception"
