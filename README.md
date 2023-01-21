@@ -6,6 +6,7 @@ Experimental Project, i created this project using Go (Echo) for learning implem
 
 - Authentication (JWT)
 - CRUD //work in progress
+- DTO validation
 
 ### Echo Framework
 
