@@ -36,13 +36,27 @@ func Register(c echo.Context) error {
 	})
 }
 
-func Login(c echo.Context) error {
+func Login(c echo.Context) (err error) {
+
 	email := c.FormValue("email")
 	password := c.FormValue("password")
 
-	hashed, err := PasswordHashing(password)
+	dto := &LoginValidation{
+		Email:    email,
+		Password: password,
+	}
+
+	if err = c.Bind(dto); err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+
+	if err = c.Validate(dto); err != nil {
+		return err
+	}
+
+	hashed, err := PasswordHashing(dto.Password)
 	user := model.User{
-		Email:          email,
+		Email:          dto.Email,
 		HashedPassword: hashed,
 	}
 
@@ -64,7 +78,7 @@ func Login(c echo.Context) error {
 	token, err := jwt.CreateToken(&user)
 
 	if err != nil {
-		panic("failed to create token")
+		panic(err)
 	}
 
 	return c.JSON(http.StatusOK, &Result{

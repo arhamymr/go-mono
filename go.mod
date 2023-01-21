@@ -3,6 +3,7 @@ module go-mono
 go 1.18
 
 require (
+	github.com/go-playground/validator v9.31.0+incompatible
 	github.com/golang-jwt/jwt/v4 v4.4.3
 	github.com/joho/godotenv v1.4.0
 	github.com/labstack/echo/v4 v4.9.0
@@ -13,9 +14,15 @@ require (
 )
 
 require (
+	github.com/go-playground/locales v0.14.0 // indirect
+	github.com/go-playground/universal-translator v0.18.0 // indirect
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
+	github.com/kr/pretty v0.3.0 // indirect
+	github.com/leodido/go-urn v1.2.1 // indirect
+	github.com/rogpeppe/go-internal v1.8.0 // indirect
 	github.com/swaggo/files v0.0.0-20220728132757-551d4a08d97a // indirect
 	golang.org/x/time v0.3.0 // indirect
+	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
 )
 
 require (
