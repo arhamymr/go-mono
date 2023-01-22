@@ -3,6 +3,7 @@ package router
 import (
 	"go-mono/jwt"
 	mod_auth "go-mono/modules/auth"
+	mod_media "go-mono/modules/media"
 	mod_posts "go-mono/modules/posts"
 	"strings"
 
@@ -34,6 +35,12 @@ func Route(r echo.Echo) {
 	post.GET("", mod_posts.GetMany)
 	post.GET("/:id", mod_posts.GetOne)
 	post.DELETE("/:id", mod_posts.Delete)
+
+	// media
+	media := r.Group("/media")
+	media.POST("/upload", mod_media.Upload)
+	// todo
+	media.DELETE("/delete", mod_media.Delete)
 
 	// docs
 	r.GET("/docs/*", echoSwagger.WrapHandler, middleware.GzipWithConfig(middleware.GzipConfig{
