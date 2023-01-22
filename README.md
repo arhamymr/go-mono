@@ -23,3 +23,8 @@ Experimental Project, i created this project using Go (Echo) for learning implem
 #### Docs
 
 - Auto Generate Swagger
+
+
+#### Firebase 
+- Configs
+- Bucket 
