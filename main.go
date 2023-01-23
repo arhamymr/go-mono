@@ -2,6 +2,7 @@ package main
 
 import (
 	"go-mono/configs"
+	drout "go-mono/experimental"
 	"go-mono/router"
 	"net/http"
 
@@ -34,5 +35,21 @@ func main() {
 	e.Validator = &CustomValidator{validator: validator.New()}
 	e.Static("/static", "static")
 	router.Route(*e)
-	e.Logger.Fatal(e.Start(PORT))
+
+	// custom router
+
+	dr := drout.NewRouter()
+	dr.Route("GET", "/test",
+		func(w http.ResponseWriter, r *http.Request) {
+			message := "test"
+			w.Write([]byte("Hello " + message))
+		})
+
+	dr.Route("GET", "/test2",
+		func(w http.ResponseWriter, r *http.Request) {
+			message := "test"
+			w.Write([]byte("Hello " + message))
+		})
+	http.ListenAndServe(":8000", dr)
+	// e.Logger.Fatal(e.Start(PORT))
 }
