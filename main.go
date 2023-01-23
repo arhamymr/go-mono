@@ -3,7 +3,6 @@ package main
 import (
 	"go-mono/configs"
 	drout "go-mono/experimental"
-	"go-mono/router"
 	"net/http"
 
 	"github.com/go-playground/validator"
@@ -31,13 +30,15 @@ func (cv *CustomValidator) Validate(i interface{}) error {
 }
 
 func main() {
-	e := echo.New()
-	e.Validator = &CustomValidator{validator: validator.New()}
-	e.Static("/static", "static")
-	router.Route(*e)
 
-	// custom router
+	// disable echo for working on experiment feature
+	// e := echo.New()
+	// e.Validator = &CustomValidator{validator: validator.New()}
+	// e.Static("/static", "static")
+	// router.Route(*e)
+	// e.Logger.Fatal(e.Start(PORT))
 
+	// experimental feature
 	dr := drout.NewRouter()
 	dr.Route("GET", "/test",
 		func(w http.ResponseWriter, r *http.Request) {
@@ -51,5 +52,4 @@ func main() {
 			w.Write([]byte("Hello " + message))
 		})
 	http.ListenAndServe(":8000", dr)
-	// e.Logger.Fatal(e.Start(PORT))
 }
