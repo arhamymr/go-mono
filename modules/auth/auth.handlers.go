@@ -11,7 +11,6 @@ import (
 
 func Register(c echo.Context) error {
 	hashed, err := PasswordHashing(c.FormValue("password"))
-
 	if err != nil {
 		panic("Failed to hashing password")
 	}
@@ -37,7 +36,6 @@ func Register(c echo.Context) error {
 }
 
 func Login(c echo.Context) (err error) {
-
 	email := c.FormValue("email")
 	password := c.FormValue("password")
 

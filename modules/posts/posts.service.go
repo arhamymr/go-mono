@@ -9,8 +9,7 @@ func PostService() string {
 }
 
 func (data ModelPost) CreatePost() error {
-	db := configs.ConnectDB("mysql")
-	err := db.Create(&data.data).Error
+	err := configs.DB.Create(&data.data).Error
 
 	return err
 }

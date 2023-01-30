@@ -1,6 +1,8 @@
 package configs
 
 import (
+	"fmt"
+
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -11,7 +13,9 @@ type Databases struct {
 	err error
 }
 
-func ConnectDB(dbtype string) *gorm.DB {
+var DB *gorm.DB
+
+func ConnectDB(dbtype string) {
 	con := &Databases{}
 
 	switch dbtype {
@@ -26,5 +30,6 @@ func ConnectDB(dbtype string) *gorm.DB {
 		panic(con.err)
 	}
 
-	return con.db
+	DB = con.db
+	fmt.Println("databases connected")
 }

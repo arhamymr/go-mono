@@ -18,16 +18,14 @@ func ComparePassword(hashed string, password string) error {
 }
 
 func (r ModelUser) CreateUser() (*model.User, error) {
-	var db = configs.ConnectDB("mysql")
-	result := db.Create(r.data)
+	result := configs.DB.Create(r.data)
 	err := result.Error
 
 	return r.data, err
 }
 
 func (r ModelUser) FindUser() (*model.User, error) {
-	var db = configs.ConnectDB("mysql")
-	result := db.Where("email =?", r.data.Email).First(&r.data)
+	result := configs.DB.Where("email =?", r.data.Email).First(&r.data)
 	err := result.Error
 	return r.data, err
 }

@@ -18,7 +18,6 @@ func InitRoute() *echo.Echo {
 }
 
 func Route(r echo.Echo) {
-	// auth
 	auth := r.Group("/auth", middleware.Secure())
 	auth.POST("/register", mod_auth.Register)
 	auth.POST("/login", mod_auth.Login)

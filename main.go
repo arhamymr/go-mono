@@ -2,18 +2,12 @@ package main
 
 import (
 	"go-mono/configs"
-	drout "go-mono/experimental"
+	"go-mono/router"
 	"net/http"
 
 	"github.com/go-playground/validator"
 	"github.com/labstack/echo/v4"
 )
-
-const PORT = ":3000"
-
-func init() {
-	configs.LoadEnv()
-}
 
 type (
 	CustomValidator struct {
@@ -29,27 +23,36 @@ func (cv *CustomValidator) Validate(i interface{}) error {
 	return nil
 }
 
-func main() {
+// func handler(c *dandelion.Context) error {
 
-	// disable echo for working on experiment feature
-	// e := echo.New()
-	// e.Validator = &CustomValidator{validator: validator.New()}
-	// e.Static("/static", "static")
-	// router.Route(*e)
-	// e.Logger.Fatal(e.Start(PORT))
+// 	req := c.Request()
+// 	fmt.Println(c, req)
+// 	return c.JSON()
+// }
+
+func init() {
+	configs.LoadEnv()
+}
+
+func main() {
+	configs.ConnectDB("mysql")
+	// echo version
+	e := echo.New()
+	e.Validator = &CustomValidator{validator: validator.New()}
+	e.Static("/static", "static")
+	router.Route(*e)
+
+	const PORT = ":3000"
+	e.Logger.Fatal(e.Start(PORT))
 
 	// experimental feature
-	dr := drout.NewRouter()
-	dr.Route("GET", "/test",
-		func(w http.ResponseWriter, r *http.Request) {
-			message := "test"
-			w.Write([]byte("Hello " + message))
-		})
+	// r := dandelion.NewRouter()
+	// r.Route("GET", "/test", handler)
 
-	dr.Route("GET", "/test2",
-		func(w http.ResponseWriter, r *http.Request) {
-			message := "test"
-			w.Write([]byte("Hello " + message))
-		})
-	http.ListenAndServe(":8000", dr)
+	// r.Route("GET", "/test2",
+	// 	func(w http.ResponseWriter, r *http.Request) {
+	// 		message := "test"
+	// 		w.Write([]byte("Hello " + message))
+	// 	})
+	// http.ListenAndServe(":8000", dr)
 }

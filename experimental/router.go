@@ -1,4 +1,4 @@
-package drout
+package dandelion
 
 import (
 	"fmt"
@@ -13,10 +13,6 @@ type RouteEntry struct {
 	Path    string
 	Method  string
 	Handler http.HandlerFunc
-}
-
-func NewRouter() *Router {
-	return &Router{}
 }
 
 func (rou *Router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
