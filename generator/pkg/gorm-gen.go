@@ -12,8 +12,7 @@ func GormGen() {
 		Mode:    gen.WithoutContext | gen.WithDefaultQuery | gen.WithQueryInterface, // generate mode
 	})
 
-	db := configs.ConnectDB("mysql")
-	g.UseDB(db)
+	g.UseDB(configs.DB)
 
 	g.GenerateAllTable()
 	g.Execute()
