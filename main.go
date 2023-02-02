@@ -42,7 +42,7 @@ func main() {
 	e.Static("/static", "static")
 	router.Route(*e)
 
-	const PORT = ":3000"
+	const PORT = ":3001"
 	e.Logger.Fatal(e.Start(PORT))
 
 	// experimental feature
