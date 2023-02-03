@@ -7,7 +7,7 @@ Experimental Project, i created this project using Go (Echo) for learning implem
 - Authentication (JWT)
 - CRUD //work in progress
 - DTO validation
-- Dockerized
+- Dockerized, docker compose
 
 ### Echo Framework
 
@@ -25,10 +25,10 @@ Experimental Project, i created this project using Go (Echo) for learning implem
 
 - Auto Generate Swagger
 
+#### Firebase
 
-#### Firebase 
 - Configs
-- Bucket 
+- Bucket
 
 #### Experimental from scrach
 
