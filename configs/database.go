@@ -21,6 +21,7 @@ func ConnectDB(dbtype string) {
 	switch dbtype {
 	case "mysql":
 		con.dsn = GET("DSN")
+		fmt.Println(con.dsn, "log dsn")
 		con.db, con.err = gorm.Open(mysql.Open(con.dsn), &gorm.Config{})
 	default:
 		panic("Unknow name database")

@@ -1,0 +1,23 @@
+version: "3.9"
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+    networks:
+      - go-network
+
+  golang:
+    build: .
+    container_name: golang
+    ports:
+      - 8080:8080
+    networks:
+      - go-network
+
+networks:
+  go-network:
+    name: go-network
