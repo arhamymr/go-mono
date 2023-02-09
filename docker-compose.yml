@@ -1,23 +1,29 @@
 version: "3.9"
 services:
   mysql:
-    image: mysql:5.7
+    image: mysql
     container_name: mysql
     ports:
-      - 3306:3306
+      - 3307:3307
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: 123456
-    networks:
-      - go-network
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: app_db
+    volumes:
+      - mysql-db:/var/lib/mysql
 
   golang:
-    build: .
+    build: 
+      context: .
+      dockerfile: Dockerfile
+
     container_name: golang
     ports:
       - 8080:8080
-    networks:
-      - go-network
+    depends_on:
+      - mysql
 
-networks:
-  go-network:
-    name: go-network
+  # add phpmyadmin service 
+volumes:
+  mysql-db:

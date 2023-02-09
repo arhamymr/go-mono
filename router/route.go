@@ -5,6 +5,7 @@ import (
 	mod_auth "go-mono/modules/auth"
 	mod_media "go-mono/modules/media"
 	mod_posts "go-mono/modules/posts"
+	mod_youtubes "go-mono/modules/youtube"
 	"strings"
 
 	echojwt "github.com/labstack/echo-jwt/v4"
@@ -40,6 +41,10 @@ func Route(r echo.Echo) {
 	media.POST("/upload", mod_media.Upload)
 	// todo
 	media.DELETE("/delete", mod_media.Delete)
+
+	//  youtube
+	youtube := r.Group("/youtube")
+	youtube.POST("/search", mod_youtubes.SearchYoutube)
 
 	// docs
 	r.GET("/docs/*", echoSwagger.WrapHandler, middleware.GzipWithConfig(middleware.GzipConfig{
